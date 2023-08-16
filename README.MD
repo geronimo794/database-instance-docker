@@ -5,7 +5,11 @@
 cp .env.format .env
 ```
 2. Fill the needed field like user and password on ```.env``` file
-3. Run the docker compose file
+3. Create docker network for your service to run. You can change it on ```.env``` file.
+```
+docker network create main-network -d bridge
+```
+4. Run the docker compose file
 ```
 docker compose -f docker-compose.yml up -d --build
 ```
