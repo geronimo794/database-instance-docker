@@ -16,7 +16,7 @@ services:
         aliases:
           - mysql
     environment:
-      MYSQL_ROOT_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
       MYSQL_DATABASE: ${MYSQL_DATABASE}
       MYSQL_USER: ${MYSQL_USER}
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
@@ -33,13 +33,26 @@ services:
       default:
         aliases:
           - mongodb
-
     ports: 
       - ${MONGODB_PORT}:27017
     restart: unless-stopped
     environment:
       MONGO_INITDB_ROOT_USERNAME: ${MONGO_INITDB_ROOT_USERNAME}
       MONGO_INITDB_ROOT_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD}
+
+  # Redis
+  #######
+  redis:
+    image: redis/redis-stack:latest
+    volumes:
+      - redis-data:/data
+    ports:
+      - ${REDIS_PORT}:6379
+      - ${REDIS_INSIGHT_PORT}:8001
+    networks:
+      default:
+        aliases:
+          - redis
 
 
 volumes:
@@ -49,6 +62,8 @@ volumes:
   mongodb:
   mongodb-data:
   mongodb-config:
+  # Redis
+  redis-data:
 
 networks:
   default:
