@@ -1,23 +1,41 @@
 version: '3.5'
 
 services:
+  # MySQL
+  #######
   mysql:
     platform: linux/x86_64
-    image: mysql:5.7
+    image: mysql:8.1
+    ports: 
+      - ${MYSQL_PORT}:3306
+    restart: unless-stopped
     volumes:
       - "mysql-data:/var/lib/mysql"
-    restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
-      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DB_NAME}
       MYSQL_USER: ${MYSQL_USER}
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
-    ports:
-      - '8806:3306'
+
+  # mongodb:
+  #   image: mongo:6.0.5
+  #   environment:
+  #     MONGO_INITDB_ROOT_USERNAME: ${LOG_DB_USERNAME}
+  #     MONGO_INITDB_ROOT_PASSWORD: ${LOG_DB_PASSWORD}
+  #   ports: 
+  #     - ${LOG_DB_PORT}:27017
+  #   volumes:
+  #     - mongodb:/etc/mongo
+  #     - mongodb-data:/data/db
+  #     - mongodb-config:/data/configdb
+  #   restart: unless-stopped
 
 
 volumes:
   mysql-data:
+  # mongodb:
+  # mongodb-data:
+  # mongodb-config:
 
 networks:
   default:
