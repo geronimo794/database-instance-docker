@@ -1,0 +1,18 @@
+version: '3.1'
+
+services:
+
+  main-phpmyadmin:
+    image: phpmyadmin:5.2.0
+    ports:
+    - "8807:80"
+    environment:
+      PMA_PORT: 3306
+      PMA_HOST: mysql
+      PMA_USER: ${MYSQL_USER}
+      PMA_PASSWORD: ${MYSQL_PASSWORD}
+
+networks:
+  default:
+    name: main-network
+    external: true

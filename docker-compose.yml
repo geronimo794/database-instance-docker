@@ -1,0 +1,25 @@
+version: '3.5'
+
+services:
+  mysql:
+    platform: linux/x86_64
+    image: mysql:5.7
+    volumes:
+      - "mysql-data:/var/lib/mysql"
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    ports:
+      - '8806:3306'
+
+
+volumes:
+  mysql-data:
+
+networks:
+  default:
+    name: main-network
+    external: true
