@@ -16,28 +16,32 @@ services:
       MYSQL_DATABASE: ${MYSQL_DATABASE}
       MYSQL_USER: ${MYSQL_USER}
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
-
-  # mongodb:
-  #   image: mongo:6.0.5
-  #   environment:
-  #     MONGO_INITDB_ROOT_USERNAME: ${LOG_DB_USERNAME}
-  #     MONGO_INITDB_ROOT_PASSWORD: ${LOG_DB_PASSWORD}
-  #   ports: 
-  #     - ${LOG_DB_PORT}:27017
-  #   volumes:
-  #     - mongodb:/etc/mongo
-  #     - mongodb-data:/data/db
-  #     - mongodb-config:/data/configdb
-  #   restart: unless-stopped
+  
+  # MongoDB
+  #########
+  mongodb:
+    image: mongo:6.0.5
+    volumes:
+      - mongodb:/etc/mongo
+      - mongodb-data:/data/db
+      - mongodb-config:/data/configdb
+    ports: 
+      - ${MONGODB_PORT}:27017
+    restart: unless-stopped
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_INITDB_ROOT_USERNAME}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD}
 
 
 volumes:
+  # MySQL
   mysql-data:
-  # mongodb:
-  # mongodb-data:
-  # mongodb-config:
+  # MongoDB
+  mongodb:
+  mongodb-data:
+  mongodb-config:
 
 networks:
   default:
-    name: main-network
+    name: ${NETWORK}
     external: true
