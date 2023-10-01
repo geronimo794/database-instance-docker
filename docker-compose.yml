@@ -48,6 +48,7 @@ services:
       - redis-data:/data
     ports:
       - ${REDIS_PORT}:6379
+    restart: unless-stopped
     networks:
       default:
         aliases:
