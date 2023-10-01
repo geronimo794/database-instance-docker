@@ -37,7 +37,7 @@ services:
       - redis-insight-data:/data
     environment:
       - RITRUSTEDORIGINS=${REDIS_INSIGHT_ORIGIN} # Trust the proxy origin
-      - RIPROXYENABLE=t                        # Enable Subpath Proxy
+      - RIPROXYENABLE=true                        # Enable Subpath Proxy
       - RIPROXYPATH=${REDIS_INSIGHT_PATH}  # Set static proxy subpath
     restart: unless-stopped
 
