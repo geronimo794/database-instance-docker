@@ -27,6 +27,24 @@ services:
       ME_CONFIG_SITE_BASEURL: ${ME_CONFIG_SITE_BASEURL}
     restart: unless-stopped
 
+  # Redis insight
+  ##########################
+  redis-insight:
+    image: redislabs/redisinsight:latest
+    ports:
+      - ${ME_PORT}:8001
+    volumes:
+      - redis-insight-data:/data
+    environment:
+      - RITRUSTEDORIGINS=${REDIS_INSIGHT_ORIGIN} # Trust the proxy origin
+      - RIPROXYENABLE=t                        # Enable Subpath Proxy
+      - RIPROXYPATH=${REDIS_INSIGHT_PATH}  # Set static proxy subpath
+    restart: unless-stopped
+
+volumes:
+  # Redis
+  redis-insight-data:
+
 networks:
   default:
     name: ${NETWORK}

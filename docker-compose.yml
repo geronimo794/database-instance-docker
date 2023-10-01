@@ -43,17 +43,15 @@ services:
   # Redis
   #######
   redis:
-    image: redis/redis-stack:latest
+    image: redis/redis-stack-server:latest
     volumes:
       - redis-data:/data
     ports:
       - ${REDIS_PORT}:6379
-      - ${REDIS_INSIGHT_PORT}:8001
     networks:
       default:
         aliases:
           - redis
-
 
 volumes:
   # MySQL
