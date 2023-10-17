@@ -20,7 +20,14 @@ services:
       MYSQL_DATABASE: ${MYSQL_DATABASE}
       MYSQL_USER: ${MYSQL_USER}
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
-  
+    # Limit default logging container
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "200k"
+        max-file: "10"
+        mode: non-blocking
+
   # MongoDB
   #########
   mongodb:
@@ -34,12 +41,19 @@ services:
         aliases:
           - mongodb
     ports: 
-      - ${MONGODB_PORT}:27017
+      - 127.0.0.1:${MONGODB_PORT}:27017
     restart: unless-stopped
     environment:
       MONGO_INITDB_ROOT_USERNAME: ${MONGO_INITDB_ROOT_USERNAME}
       MONGO_INITDB_ROOT_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD}
-
+    # Limit default logging container
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "200k"
+        max-file: "10"
+        mode: non-blocking
+  
   # Redis
   #######
   redis:
@@ -47,12 +61,44 @@ services:
     volumes:
       - redis-data:/data
     ports:
-      - ${REDIS_PORT}:6379
+      - 127.0.0.1:${REDIS_PORT}:6379
     restart: unless-stopped
     networks:
       default:
         aliases:
           - redis
+    # Limit default logging container
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "200k"
+        max-file: "10"
+        mode: non-blocking
+
+  # RabbitMQ
+  ##########
+  rabbitmq:
+    image: rabbitmq:3.12.6-management
+    environment:
+      RABBITMQ_DEFAULT_USER: ${RABBITMQ_DEFAULT_USER}
+      RABBITMQ_DEFAULT_PASS: ${RABBITMQ_DEFAULT_PASS}
+    restart: unless-stopped
+    networks:
+      default:
+        aliases:
+          - rabbitmq
+    ports:
+      # AMPQ port
+      - 127.0.0.1:${RABBITMQ_AMQP_PORT}:5672
+      # Management port
+      - 127.0.0.1:${RABBITMQ_MANAGEMENT_PORT}:15672
+    # Limit default logging container
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "200k"
+        max-file: "10"
+        mode: non-blocking
 
 volumes:
   # MySQL
