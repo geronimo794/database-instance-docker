@@ -1,0 +1,28 @@
+version: "3.9"
+services:
+
+  mssql:
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    restart: unless-stopped
+    user: root
+    environment:
+      ACCEPT_EULA: "Y"
+      MSSQL_SA_PASSWORD: ${SQL_SERVER_PASSWORD}
+      MSSQL_PID: "Express"
+    networks:
+      default:
+        aliases:
+          - sql-server
+    ports:
+      - "${SQL_SERVER_PORT}:1433"
+    volumes:
+     - mssql-data:/var/opt/mssql/data
+
+volumes:
+  # MySQL
+  mssql-data:
+
+networks:
+  default:
+    name: ${NETWORK}
+    external: true
