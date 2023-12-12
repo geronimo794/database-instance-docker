@@ -12,14 +12,14 @@ services:
     networks:
       default:
         aliases:
-          - sql-server
+          - mssql-server
     ports:
       - "${SQL_SERVER_PORT}:1433"
     volumes:
      - mssql-data:/var/opt/mssql/data
 
 volumes:
-  # MySQL
+  # MSSQL
   mssql-data:
 
 networks:
