@@ -1,0 +1,44 @@
+version: '3.5'
+
+services:
+  # MySQL
+  #######
+  mysql:
+    image: mysql:8.1
+    ports: 
+      - ${MYSQL_PORT}:3306
+    restart: unless-stopped
+    volumes:
+      - "mysql-data:/var/lib/mysql"
+    networks:
+      default:
+        aliases:
+          - mysql
+    environment:
+      MYSQL_ROOT_PASSWORD_FILE: /run/secrets/mysql_root_password
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD_FILE: /run/secrets/mysql_password
+
+    # Limit default logging container
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "200k"
+        max-file: "10"
+        mode: non-blocking
+
+volumes:
+  # MySQL
+  mysql-data:
+
+secrets:
+   mysql_password:
+     file: ./docker-secrets/mysql_password.txt
+   mysql_root_password:
+     file: ./docker-secrets/mysql_root_password.txt
+
+networks:
+  default:
+    name: ${NETWORK}
+    external: true
