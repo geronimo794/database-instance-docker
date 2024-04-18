@@ -13,6 +13,7 @@ docker stack deploy -c docker-compose-portainer-agent.yaml portainer_agent
 sudo su
 ...
 source .env
+export NETWORK
 export MYSQL_USER
 export MYSQL_DATABASE
 export MYSQL_PORT

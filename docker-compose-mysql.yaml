@@ -41,6 +41,11 @@ volumes:
   # MySQL
   mysql-data:
 
+networks:
+  default:
+    external: true
+    name: ${NETWORK}
+
 secrets:
    mysql_password:
      file: ./docker-secrets/mysql_password.txt
