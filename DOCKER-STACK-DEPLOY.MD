@@ -26,5 +26,5 @@ sudo su
 source .env
 export NETWORK
 export MONGODB_PORT
-docker stack deploy -c docker-compose-mongodb.yaml -d mysql
+docker stack deploy -c docker-compose-mongodb.yaml -d mongodb
 ```

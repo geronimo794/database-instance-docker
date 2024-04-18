@@ -8,7 +8,7 @@ services:
     ports: 
       - ${MYSQL_PORT}:3306
     volumes:
-      - "mysql-data:/var/lib/mysql"
+      - "./persistent-data/mysql:/var/lib/mysql"
     networks:
       default:
         aliases:
@@ -36,10 +36,6 @@ services:
         max-size: "200k"
         max-file: "10"
         mode: non-blocking
-
-volumes:
-  # MySQL
-  mysql-data:
 
 networks:
   default:

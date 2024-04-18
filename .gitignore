@@ -1,3 +1,5 @@
 .env
 prometheus.yml
 /docker-secrets/*
+/persistent-data/mysql/*
+/persistent-data/mongodb/*
