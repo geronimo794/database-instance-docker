@@ -19,3 +19,12 @@ export MYSQL_DATABASE
 export MYSQL_PORT
 docker stack deploy -c docker-compose-mysql.yaml -d mysql
 ```
+3. MongoDB
+```
+sudo su
+...
+source .env
+export NETWORK
+export MONGODB_PORT
+docker stack deploy -c docker-compose-mongodb.yaml -d mysql
+```
