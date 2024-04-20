@@ -1,5 +1,8 @@
 #/bin/bash
 
+# Make sure run as sudo su
+# sudo su
+
 # Show all command and variable value
 set -x
 
@@ -18,8 +21,6 @@ set +o allexport
 # Hide all command and variable value again
 set +x
 
-source .env
-
 export PORTAINER_PORT
 
-sudo docker stack deploy -c docker-compose-portainer-stack.yaml portainer
+docker stack deploy -c docker-compose-portainer-stack.yaml portainer

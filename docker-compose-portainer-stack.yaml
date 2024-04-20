@@ -19,11 +19,15 @@ services:
     image: portainer/portainer-ce:2.20.1
     command: -H tcp://tasks.agent:9001 --tlsskipverify
     ports:
-      - ${PORTAINER_PORT}:9443
-      # - "9000:9000"
-      # - "8000:8000"
+      - target: 9000
+        published: ${PORTAINER_PORT}
+        mode: host
+      # - 9443:9443
+      # - 8000:8000
     volumes:
       - ./persistent-data/portainer:/data
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /var/lib/docker/volumes:/var/lib/docker/volumes
     networks:
       - agent_network
     deploy:
