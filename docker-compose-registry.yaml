@@ -1,0 +1,29 @@
+version: '3.7'
+
+services:
+  registry:
+    image: registry:2
+    ports:
+      - target: 5000
+        published: ${IMAGE_REGISTRY_PORT}
+        mode: ingress
+    volumes:
+      - ./persistent-data/registry/data/:/var/lib/registry
+      - ./persistent-data/registry/credential/:/auth
+    environment:
+      REGISTRY_AUTH: htpasswd
+      REGISTRY_AUTH_HTPASSWD_REALM: Registry Realm
+      REGISTRY_AUTH_HTPASSWD_PATH: /auth/htpasswd
+    deploy:
+      replicas: 1
+      placement:
+        constraints:
+          - node.role == manager
+    networks:
+      default:
+        aliases:
+          - registry
+networks:
+  default:
+    external: true
+    name: ${NETWORK}
