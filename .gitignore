@@ -4,3 +4,5 @@ prometheus.yml
 /persistent-data/mysql/*
 /persistent-data/mongodb/*
 /persistent-data/portainer/*
+/persistent-data/registry/credential/*
+/persistent-data/registry/data/*
