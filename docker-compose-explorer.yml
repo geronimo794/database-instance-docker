@@ -32,7 +32,7 @@ services:
   redis-insight:
     image: redislabs/redisinsight:latest
     ports:
-      - ${REDIS_INSIGHT_PORT}:8001
+      - ${REDIS_INSIGHT_PORT}:5540
     volumes:
       - redis-insight-data:/data
     environment:
