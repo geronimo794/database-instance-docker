@@ -1,0 +1,49 @@
+version: '3.5'
+
+services:
+  
+  # Redis
+  #######
+  redis:
+    image: redis/redis-stack-server:latest
+    volumes:
+      - redis-data:/data
+    ports:
+      - 127.0.0.1:${REDIS_PORT}:6379
+    restart: unless-stopped
+    networks:
+      default:
+        aliases:
+          - redis
+    # Limit default logging container
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "200k"
+        max-file: "10"
+        mode: non-blocking
+
+  # Redis insight
+  ##########################
+  redis-insight:
+    image: redislabs/redisinsight:latest
+    ports:
+      - ${REDIS_INSIGHT_PORT}:5540
+    volumes:
+      - redis-insight-data:/data
+    environment:
+      - RITRUSTEDORIGINS=${REDIS_INSIGHT_ORIGIN} # Trust the proxy origin
+      - RIPROXYENABLE=t                        # Enable Subpath Proxy
+      - RIPROXYPATH=${REDIS_INSIGHT_PATH}  # Set static proxy subpath
+    restart: unless-stopped
+    # Limit default logging container
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "200k"
+        max-file: "10"
+        mode: non-blocking
+
+volumes:
+  # Redis
+  redis-data:
