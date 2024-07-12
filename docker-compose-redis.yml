@@ -47,3 +47,4 @@ services:
 volumes:
   # Redis
   redis-data:
+  redis-insight-data:
