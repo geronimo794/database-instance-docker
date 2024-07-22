@@ -89,6 +89,7 @@ services:
       - xpack.security.transport.ssl.certificate_authorities=certs/ca/ca.crt
       - xpack.security.transport.ssl.verification_mode=certificate
       - xpack.license.self_generated.type=${LICENSE}
+      - xpack.monitoring.collection.enabled=true
     mem_limit: ${ES_MEM_LIMIT}
     ulimits:
       memlock:
@@ -128,6 +129,7 @@ services:
       - xpack.security.transport.ssl.certificate_authorities=certs/ca/ca.crt
       - xpack.security.transport.ssl.verification_mode=certificate
       - xpack.license.self_generated.type=${LICENSE}
+      - xpack.monitoring.collection.enabled=true
     mem_limit: ${ES_MEM_LIMIT}
     ulimits:
       memlock:
@@ -167,6 +169,7 @@ services:
       - xpack.security.transport.ssl.certificate_authorities=certs/ca/ca.crt
       - xpack.security.transport.ssl.verification_mode=certificate
       - xpack.license.self_generated.type=${LICENSE}
+      - xpack.monitoring.collection.enabled=true
     mem_limit: ${ES_MEM_LIMIT}
     ulimits:
       memlock:
@@ -215,6 +218,32 @@ services:
       timeout: 10s
       retries: 120
 
+  metricbeat01:
+    depends_on:
+      es01:
+        condition: service_healthy
+      es02:
+        condition: service_healthy
+      es03:
+        condition: service_healthy
+      kibana:
+        condition: service_healthy
+    image: docker.elastic.co/beats/metricbeat:${STACK_VERSION}
+    user: root
+    volumes:
+      - certs:/usr/share/metricbeat/certs
+      - metricbeatdata01:/usr/share/metricbeat/data
+      - "./metricbeat.yml:/usr/share/metricbeat/metricbeat.yml:ro"
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+      - "/sys/fs/cgroup:/hostfs/sys/fs/cgroup:ro"
+      - "/proc:/hostfs/proc:ro"
+      - "/:/hostfs:ro"
+    environment:
+      - ELASTIC_USER=elastic
+      - ELASTIC_PASSWORD=${ELASTIC_PASSWORD}
+      - ELASTIC_HOSTS=https://es01:9200
+      - KIBANA_HOSTS=http://kibana:5601
+
 volumes:
   certs:
     driver: local
@@ -226,3 +255,5 @@ volumes:
     driver: local
   kibanadata:
     driver: local
+  metricbeatdata01:
+   driver: local
