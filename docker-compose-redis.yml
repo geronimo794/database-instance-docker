@@ -13,7 +13,8 @@ services:
     restart: unless-stopped
     #command: redis-server --dir /data --save 60 1 --appendonly yes --requirepass redis123
     environment:
-      - REDIS_ARGS=--dir /data --appendonly yes --save 60 1 --requirepass ${REDIS_PASSWORD}
+      REDIS_ARGS: "--dir /data --appendonly yes --save 60 1 --requirepass ${REDIS_PASSWORD} --user ${REDIS_USERNAME} on >${REDIS_PASSWORD} ~* allcommands --user default off nopass nocommands"
+    
     networks:
       default:
         aliases:
