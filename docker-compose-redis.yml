@@ -40,6 +40,9 @@ services:
       - RIPROXYENABLE=t                        # Enable Subpath Proxy
       - RIPROXYPATH=${REDIS_INSIGHT_PATH}  # Set static proxy subpath
     restart: unless-stopped
+    networks:
+      default:
+
     # Limit default logging container
     logging:
       driver: "json-file"
@@ -52,3 +55,8 @@ volumes:
   # Redis
   redis-data:
   redis-insight-data:
+
+networks:
+  default:
+    name: ${NETWORK}
+    external: true
