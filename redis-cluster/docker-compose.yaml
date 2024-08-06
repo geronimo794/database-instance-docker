@@ -1,77 +1,85 @@
 
 services:
   redis-node-1:
-    image: redis:latest
+    image: redis:7.4.0
     ports:
       - 7000:7000
     networks:
       - default
     hostname: redis-node-1
     volumes:
-      - ./7000:/redis
+      - ./config/7000:/redis
+      - redis-data-node-1:/data
     command: redis-server /redis/redis.conf
 
   redis-node-2:
-    image: redis:latest
+    image: redis:7.4.0
     ports:
       - 7001:7001
     networks:
       - default
     hostname: redis-node-2
     volumes:
-      - ./7001:/redis
+      - ./config/7001:/redis
+      - redis-data-node-2:/data
     command: redis-server /redis/redis.conf
 
   redis-node-3:
-    image: redis:latest
+    image: redis:7.4.0
     ports:
       - 7002:7002
     networks:
       - default
     hostname: redis-node-3
     volumes:
-      - ./7002:/redis
+      - ./config/7002:/redis
+      - redis-data-node-3:/data
     command: redis-server /redis/redis.conf
 
   redis-node-4:
-    image: redis:latest
+    image: redis:7.4.0
     ports:
       - 7003:7003
     networks:
       - default
     hostname: redis-node-4
     volumes:
-      - ./7003:/redis
+      - ./config/7003:/redis
+      - redis-data-node-4:/data
     command: redis-server /redis/redis.conf
 
   redis-node-5:
-    image: redis:latest
+    image: redis:7.4.0
     ports:
       - 7004:7004
     networks:
       - default
     hostname: redis-node-5
     volumes:
-      - ./7004:/redis
+      - ./config/7004:/redis
+      - redis-data-node-5:/data
     command: redis-server /redis/redis.conf
   
   redis-node-6:
-    image: redis:latest
+    image: redis:7.4.0
     ports:
       - 7005:7005
     networks:
       - default
     hostname: redis-node-6
     volumes:
-      - ./7005:/redis
+      - ./config/7005:/redis
+      - redis-data-node-6:/data
     command: redis-server /redis/redis.conf
   
   redis-cluster-creator:
-    image: redis:latest
+    image: redis:7.4.0
     ports:
       - 6999:6999
     networks:
       - default
+    volumes:
+      - redis-data-node-7:/data
     command: redis-cli -p 7000 --cluster create redis-node-1:7000 redis-node-2:7001 redis-node-3:7002 redis-node-4:7003 redis-node-5:7004 redis-node-6:7005 --cluster-replicas 1 --cluster-yes
     depends_on:
       - redis-node-1
@@ -82,15 +90,26 @@ services:
       - redis-node-6
 
   redis-insight:
-    image: redislabs/redisinsight
+    image: redislabs/redisinsight:2.54
     ports:
-      - 8001:5540
+      - ${REDIS_INSIGHT_PORT}:5540
     networks:
       - default
     volumes:
-      - ./redisinsight:/db
+      - redis-insight-data:/data
     depends_on:
       - redis-cluster-creator
+
+volumes:
+  # Redis
+  redis-data-node-1:
+  redis-data-node-2:
+  redis-data-node-3:
+  redis-data-node-4:
+  redis-data-node-5:
+  redis-data-node-6:
+  redis-data-node-7:
+  redis-insight-data:
 
 networks:
   default:
