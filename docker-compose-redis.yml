@@ -7,7 +7,7 @@ services:
   redis:
     image: redis/redis-stack-server:latest
     volumes:
-      - redis-data:/data
+      - ./persistent-data/redis:/data
     ports:
       - ${REDIS_PORT}:6379
     restart: unless-stopped
@@ -33,7 +33,7 @@ services:
     ports:
       - ${REDIS_INSIGHT_PORT}:5540
     volumes:
-      - redis-insight-data:/data
+      - ./persistent-data/redis-insight:/data
     environment:
       - RITRUSTEDORIGINS=${REDIS_INSIGHT_ORIGIN} # Trust the proxy origin
       - RIPROXYENABLE=t                        # Enable Subpath Proxy
