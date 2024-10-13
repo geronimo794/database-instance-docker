@@ -20,5 +20,5 @@ set +x
 
 export NETWORK
 export POSTGRES_USER
-
+export POSTGRES_PORT
 docker stack deploy -c docker-compose-postgres.yaml postgres --detach=false

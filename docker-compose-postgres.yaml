@@ -14,6 +14,10 @@ services:
       default:
         aliases:
           - postgres
+    ports:
+      - target: 5432
+        published: ${POSTGRES_PORT:-5432}
+        mode: ingress
     deploy:
       placement: 
         constraints: 
