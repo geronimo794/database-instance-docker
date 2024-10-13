@@ -7,3 +7,5 @@ prometheus.yml
 /persistent-data/registry/credential/*
 /persistent-data/registry/data/*
 /persistent-data/pg-admin/*
+/persistent-data/redis/*
+/persistent-data/redis-insight/*
