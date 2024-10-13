@@ -1,0 +1,32 @@
+services:
+  # pgAdmin
+  #########
+  pgadmin:
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL:-pgadmin@example.com}
+      PGADMIN_DEFAULT_PASSWORD_FILE: /run/secrets/pgadmin_password
+    volumes:
+      - ./persistent-data/pg-admin:/var/lib/pgadmin
+    ports:
+      - "${PGADMIN_PORT:-5050}:80"
+    networks:
+      - default
+    deploy:
+      placement:
+        constraints:
+          - node.role == manager
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+    secrets:
+      - pgadmin_password
+
+networks:
+  default:
+    external: true
+    name: ${NETWORK}
+
+secrets:
+   pgadmin_password:
+     file: ./docker-secrets/pgadmin_password.txt
