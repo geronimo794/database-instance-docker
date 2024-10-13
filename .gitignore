@@ -6,3 +6,4 @@ prometheus.yml
 /persistent-data/portainer/*
 /persistent-data/registry/credential/*
 /persistent-data/registry/data/*
+/persistent-data/pg-admin/*

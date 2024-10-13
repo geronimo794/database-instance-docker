@@ -35,7 +35,7 @@ services:
       PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL:-pgadmin@example.com}
       PGADMIN_DEFAULT_PASSWORD_FILE: /run/secrets/pgadmin_password
     volumes:
-      - ./persistent-data/pgadmin:/var/lib/pgadmin
+      - ./persistent-data/pg-admin:/var/lib/pgadmin
     ports:
       - "${PGADMIN_PORT:-5050}:80"
     networks:
@@ -54,9 +54,6 @@ networks:
   default:
     external: true
     name: ${NETWORK}
-
-volumes:
-  pgadmin_data:
 
 secrets:
    postgres_password:
