@@ -9,3 +9,4 @@ prometheus.yml
 /persistent-data/pg-admin/*
 /persistent-data/redis/*
 /persistent-data/redis-insight/*
+/persistent-data/mssql/*
