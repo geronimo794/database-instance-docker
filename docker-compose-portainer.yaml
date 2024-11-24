@@ -8,6 +8,7 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - portainer-data:/data
+    user: root
     ports:
       - ${PORTAINER_PORT}:9000
     # Limit default logging container

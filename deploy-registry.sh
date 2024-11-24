@@ -5,10 +5,8 @@
 
 # Show all command and variable value
 set -x
-
 # Load configuration from .env file
 set -o allexport
-
 # If .env not exist then use format.env
 if [ -f .env ]; then
 	source .env
