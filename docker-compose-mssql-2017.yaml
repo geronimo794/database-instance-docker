@@ -1,0 +1,28 @@
+services:
+  mssql:
+    image: mcr.microsoft.com/mssql/server:2017-latest
+    user: root
+    deploy:
+      placement: 
+        constraints: 
+          - node.role == manager
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+    environment:
+      ACCEPT_EULA: "Y"
+      MSSQL_SA_PASSWORD: ${SQL_SERVER_PASSWORD}
+      MSSQL_PID: "Express"
+    networks:
+      default:
+        aliases:
+          - mssql-server
+    ports:
+      - "${SQL_SERVER_PORT}:1433"
+    volumes:
+     - ./persistent-data/mssql:/var/opt/mssql/data
+
+networks:
+  default:
+    name: ${NETWORK}
+    external: true
