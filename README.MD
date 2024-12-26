@@ -1,21 +1,32 @@
 # Database Instance on Docker
-## Run the Database
-1. Copy .env.format to .env
+## Usage Note:
+1. Copy the desired docker-compose file to create your running instance. For example:
+```
+cp docker-compose-postgres.yml docker-compose-running-postgres.yml
+```
+2. Run the docker compose file:
+```
+docker compose -f docker-compose-running-postgres.yml up -d --build
+```
+
+## Setting Up the Database
+1. Create your environment file by copying the template:
 ```
 cp .env.format .env
 ```
-2. Fill the needed field like user and password on ```.env``` file
-3. Create docker network for your service to run. You can change it on ```.env``` file.
+2. Configure the required fields (user and password) in the `.env` file
+3. Create a docker network for your service (network name can be modified in the `.env` file):
 ```
 docker network create main-network -d bridge
 ```
-4. Run the docker compose file
+4. Run the docker compose file:
 ```
 docker compose -f docker-compose.yml up -d --build
 ```
-## Run the explorer
-1. Run the database first
-2. Run the docker compose of explorer
+
+## Running the Explorer
+1. Ensure the database is running first
+2. Launch the explorer using docker compose:
 ```
 docker compose -f docker-compose-explorer.yml up -d --build
 ```

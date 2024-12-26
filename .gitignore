@@ -10,3 +10,6 @@ prometheus.yml
 /persistent-data/redis/*
 /persistent-data/redis-insight/*
 /persistent-data/mssql/*
+
+# Running docker compose files
+docker-compose-running-*.yaml
