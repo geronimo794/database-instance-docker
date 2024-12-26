@@ -13,3 +13,4 @@ prometheus.yml
 
 # Running docker compose files
 docker-compose-running-*.yaml
+PROD-docker-compose-*.yaml
