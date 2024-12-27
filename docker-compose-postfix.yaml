@@ -10,6 +10,7 @@ services:
       - SMTPD_SASL_USERS=${POSTFIX_SMTPD_SASL_USERS}
       - POSTFIX_mynetworks=${POSTFIX_MYNETWORKS:-10.1.2.0/24}
       - DKIM_AUTOGENERATE=true
+      - POSTFIX_myhostname=${POSTFIX_MYHOSTNAME:-postfix-server}
     volumes:
       - "./persistent-data/postfix/opendkim-keys:/etc/opendkim/keys"
     ports:
