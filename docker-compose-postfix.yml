@@ -1,0 +1,23 @@
+services:
+  postfix:
+    image: boky/postfix:v4.3.0
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+    environment:
+      - ALLOWED_SENDER_DOMAINS=${POSTFIX_ALLOWED_SENDER_DOMAINS}
+      - SMTPD_SASL_USERS=${POSTFIX_SMTPD_SASL_USERS}
+      - POSTFIX_mynetworks=${POSTFIX_MYNETWORKS:-10.1.2.0/24}
+    ports:
+      - target: 587
+        published: ${POSTFIX_PORT:-587}
+        protocol: tcp
+        mode: host
+    # Limit default logging container
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "200k"
+        max-file: "10"
+        mode: non-blocking
