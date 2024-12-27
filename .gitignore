@@ -10,6 +10,7 @@ prometheus.yml
 /persistent-data/redis/*
 /persistent-data/redis-insight/*
 /persistent-data/mssql/*
+/persistent-data/postfix/opendkim-keys/*
 
 # Running docker compose files
 docker-compose-running-*.yaml
