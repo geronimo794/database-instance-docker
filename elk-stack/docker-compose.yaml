@@ -103,6 +103,17 @@ services:
       interval: 10s
       timeout: 10s
       retries: 120
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: unless-stopped
+    # Limit default logging container
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "200k"
+        max-file: "10"
+        mode: non-blocking
 
   es02:
     depends_on:
@@ -143,6 +154,17 @@ services:
       interval: 10s
       timeout: 10s
       retries: 120
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: unless-stopped
+    # Limit default logging container
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "200k"
+        max-file: "10"
+        mode: non-blocking
 
   es03:
     depends_on:
@@ -183,6 +205,17 @@ services:
       interval: 10s
       timeout: 10s
       retries: 120
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: unless-stopped
+    # Limit default logging container
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "200k"
+        max-file: "10"
+        mode: non-blocking
 
   kibana:
     depends_on:
@@ -216,6 +249,17 @@ services:
       interval: 10s
       timeout: 10s
       retries: 120
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: unless-stopped
+    # Limit default logging container
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "200k"
+        max-file: "10"
+        mode: non-blocking
 
   # OPTIONAL USAGE
   # metricbeat01:
