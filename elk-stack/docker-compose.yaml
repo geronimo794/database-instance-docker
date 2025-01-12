@@ -89,7 +89,6 @@ services:
       - xpack.security.transport.ssl.verification_mode=certificate
       - xpack.license.self_generated.type=${LICENSE}
       - xpack.monitoring.collection.enabled=true
-    mem_limit: ${ES_MEM_LIMIT}
     ulimits:
       memlock:
         soft: -1
@@ -105,6 +104,10 @@ services:
       retries: 120
     deploy:
       replicas: 1
+      resources:
+        limits:
+          cpus: '2'
+          memory: ${ES_MEM_LIMIT}
       restart_policy:
         condition: unless-stopped
     # Limit default logging container
@@ -140,7 +143,6 @@ services:
       - xpack.security.transport.ssl.verification_mode=certificate
       - xpack.license.self_generated.type=${LICENSE}
       - xpack.monitoring.collection.enabled=true
-    mem_limit: ${ES_MEM_LIMIT}
     ulimits:
       memlock:
         soft: -1
@@ -156,6 +158,10 @@ services:
       retries: 120
     deploy:
       replicas: 1
+      resources:
+        limits:
+          cpus: '2'
+          memory: ${ES_MEM_LIMIT}
       restart_policy:
         condition: unless-stopped
     # Limit default logging container
@@ -191,7 +197,6 @@ services:
       - xpack.security.transport.ssl.verification_mode=certificate
       - xpack.license.self_generated.type=${LICENSE}
       - xpack.monitoring.collection.enabled=true
-    mem_limit: ${ES_MEM_LIMIT}
     ulimits:
       memlock:
         soft: -1
@@ -207,6 +212,10 @@ services:
       retries: 120
     deploy:
       replicas: 1
+      resources:
+        limits:
+          cpus: '2'
+          memory: ${ES_MEM_LIMIT}
       restart_policy:
         condition: unless-stopped
     # Limit default logging container
