@@ -16,3 +16,7 @@ prometheus.yml
 docker-compose-running-*.yaml
 PROD-docker-compose-*.yaml
 PROD-*.sh
+
+# Mailu
+mailu/
+
