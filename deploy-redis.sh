@@ -24,4 +24,4 @@ export REDIS_PASSWORD
 export REDIS_INSIGHT_PORT
 export NETWORK
 
-docker stack deploy -c PROD-docker-compose-redis.yaml redis
+docker stack deploy -c docker-compose-redis.yaml redis
