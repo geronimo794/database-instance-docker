@@ -12,6 +12,7 @@ prometheus.yml
 /persistent-data/mssql/*
 /persistent-data/postfix/opendkim-keys/*
 /persistent-data/postgres/*
+/persistent-data/mssql-2017/*
 
 # Running docker compose files
 docker-compose-running-*.yaml
