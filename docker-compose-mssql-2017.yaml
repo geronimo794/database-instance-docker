@@ -20,7 +20,7 @@ services:
     ports:
       - "${SQL_SERVER_PORT}:1433"
     volumes:
-     - ./persistent-data/mssql:/var/opt/mssql/data
+     - ./persistent-data/mssql-2017:/var/opt/mssql/data
 
 networks:
   default:
