@@ -22,3 +22,5 @@ PROD-*.sh
 # Mailu
 mailu/
 
+# MySQL
+my.cnf

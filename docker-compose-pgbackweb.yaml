@@ -1,0 +1,25 @@
+services:
+  pgbackweb:
+    image: eduardolat/pgbackweb:latest
+    ports:
+      - target: 8085
+        published: ${PBW_PORT:-8085}
+        mode: ingress
+    deploy:
+      placement: 
+        constraints: 
+          - node.role == manager
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+    volumes:
+      - ./persistent-data/pgbackweb:/backups
+    environment:
+      PBW_ENCRYPTION_KEY: ${PBW_ENCRYPTION_KEY}
+      PBW_POSTGRES_CONN_STRING: ${PBW_POSTGRES_CONN_STRING}
+      TZ: ${PBW_TZ}
+
+networks:
+  default:
+    external: true
+    name: ${NETWORK}
