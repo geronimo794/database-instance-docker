@@ -79,3 +79,4 @@ docker compose -f docker-compose-explorer.yml up -d --build
 2. Keep your `.env` files secure and never commit them to version control
 3. Use the provided deployment scripts to ensure proper setup
 4. Consider using docker secrets for sensitive data in production
+.
