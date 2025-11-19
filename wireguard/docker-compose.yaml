@@ -1,0 +1,35 @@
+services:
+  wg-easy:
+    #environment:
+    #  Optional:
+    #  - PORT=51821
+    #  - HOST=0.0.0.0
+    #  - INSECURE=false
+
+    image: ghcr.io/wg-easy/wg-easy:15
+    container_name: wg-easy
+    networks:
+      wg:
+        ipv4_address: 192.168.1.100
+    volumes:
+      - ./data:/etc/wireguard
+      - /lib/modules:/lib/modules:ro
+    ports:
+      - "51820:51820/udp"
+      - "8080:51821/tcp"
+    restart: always
+    cap_add:
+      - NET_ADMIN
+      - SYS_MODULE
+      # - NET_RAW # ⚠️ Uncomment if using Podman
+    sysctls:
+      - net.ipv4.ip_forward=1
+      - net.ipv4.conf.all.src_valid_mark=1
+
+networks:
+  wg:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 192.168.1.0/24
