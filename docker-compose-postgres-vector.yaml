@@ -2,7 +2,7 @@ services:
   # Postgres
   #######
   postgres-vector:
-    image: pgvector/pgvector:pg17
+    image: pgvector/pgvector:pg18
     shm_size: 128mb
     volumes:
       # Beware conflicts with postgres
@@ -27,12 +27,11 @@ services:
       restart_policy:
         condition: on-failure
     environment:
-      POSTGRES_PASSWORD_FILE: /run/secrets/postgres_password
+      POSTGRES_PASSWORD_FILE: /run/secrets/postgres_vector_password
       PGDATA: /var/lib/postgresql/data/pgdata
-      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_USER: ${POSTGRES_VECTOR_USER:-postgres_vector}
     secrets:
-      - postgres_password
-
+      - postgres_vector_password
 
 networks:
   default:
@@ -40,5 +39,5 @@ networks:
     name: ${NETWORK}
 
 secrets:
-   postgres_password:
-     file: ./docker-secrets/postgres_password.txt
+   postgres_vector_password:
+     file: ./docker-secrets/postgres_vector_password.txt
