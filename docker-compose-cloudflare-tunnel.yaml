@@ -1,0 +1,15 @@
+services:
+  cloudflared:
+    image: cloudflare/cloudflared:latest
+    restart: unless-stopped
+    deploy:
+      placement: 
+        constraints: 
+          - node.role == manager
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+    command: tunnel --no-autoupdate run
+    environment:
+      - TUNNEL_TOKEN=${CLOUDFLARE_TUNNEL_TOKEN}
+
