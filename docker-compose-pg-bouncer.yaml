@@ -1,0 +1,27 @@
+services:
+  # PG Bouncer
+  #######
+  pgbouncer:
+    image: edoburu/pgbouncer:latest
+    environment:
+      - DATABASE_URLS=${PG_BOUNCER_DATABASE_URLS}
+      - AUTH_TYPE=scram-sha-256 # remove/comment this line if using postgres:13 and lower
+      - POOL_MODE=session # transaction, statement, or session
+    ports:
+      - target: 5432
+        published: ${PG_BOUNCER_PORT:-5432}
+        mode: ingress
+    healthcheck:
+      test: ['CMD', 'pg_isready', '-h', 'localhost']
+    deploy:
+      placement: 
+        constraints: 
+          - node.role == manager
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+
+networks:
+  default:
+    external: true
+    name: ${NETWORK}
