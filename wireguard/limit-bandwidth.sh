@@ -7,7 +7,7 @@ sudo docker inspect wg-easy --format '{{.State.Pid}}'
 sudo docker exec wg-easy sh -c 'cat /sys/class/net/eth0/iflink'
 
 # Check interface index from previous iflink
-grep -l 19 /sys/class/net/veth*/ifindex
+grep -l 463 /sys/class/net/veth*/ifindex
 
 
 # Add limit to interface

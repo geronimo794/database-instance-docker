@@ -1,3 +1,5 @@
+# Separate IP Tables and Docker Network is NOT A GOOD PRACTICE
+
 Ah yes — the classic **UFW + Docker “why is my firewall being ignored?”** problem 😅
 Here’s the clean, *actually works* way to fix it.
 
