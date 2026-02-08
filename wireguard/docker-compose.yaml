@@ -10,7 +10,9 @@ services:
     container_name: wg-easy
     networks:
       wg:
-        ipv4_address: 192.168.1.100
+        # This is the IP address of the WireGuard interface
+        # Make sure it's on the same subnet as the configured subnet
+        ipv4_address: 192.168.177.100
     volumes:
       - ./data:/etc/wireguard
       - /lib/modules:/lib/modules:ro
@@ -32,4 +34,6 @@ networks:
     ipam:
       driver: default
       config:
-        - subnet: 192.168.1.0/24
+        # This is the subnet of the WireGuard network
+        # Make sure this is not in the same subnet as the other networks
+        - subnet: 192.168.177.0/24
