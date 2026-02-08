@@ -28,15 +28,9 @@ sudo ufw enable
 
 ### 2️⃣ Add firewall rules to Docker’s **DOCKER-USER** chain
 
-This chain is evaluated **before** Docker’s own rules.
-
-Example: allow only SSH + HTTP/HTTPS, block everything else.
-
+This chain is evaluated **before** Docker’s own rules
 ```bash
-sudo iptables -I DOCKER-USER -i eth0 -p tcp --dport 22 -j ACCEPT
-sudo iptables -I DOCKER-USER -i eth0 -p tcp --dport 80 -j ACCEPT
-sudo iptables -I DOCKER-USER -i eth0 -p tcp --dport 443 -j ACCEPT
-sudo iptables -I DOCKER-USER -j DROP
+./apply.sh
 ```
 
 🔹 Replace `eth0` if your interface is different (`ip a`).
@@ -50,6 +44,12 @@ Install persistence:
 ```bash
 sudo apt install iptables-persistent
 sudo netfilter-persistent save
+```
+
+For checking the rules:
+```bash
+cat /etc/iptables/rules.v4
+cat /etc/iptables/rules.v6
 ```
 
 ---
