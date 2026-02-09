@@ -27,3 +27,4 @@ mailu/
 my.cnf
 note
 wireguard/data/*
+fail2ban/config/*
