@@ -26,3 +26,4 @@ mailu/
 # MySQL
 my.cnf
 note
+wireguard/data/*
