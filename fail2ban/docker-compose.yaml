@@ -14,6 +14,8 @@ services:
     volumes:
       - ./config:/config
       - /var/log:/var/log:ro
+      - ./jail.local:/config/fail2ban/jail.local # Put your custom jail.local file here
+
       # - /path/to/airsonic/log:/remotelogs/airsonic:ro #optional
       # - /path/to/apache2/log:/remotelogs/apache2:ro #optional
       # - /path/to/authelia/log:/remotelogs/authelia:ro #optional

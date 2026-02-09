@@ -26,5 +26,8 @@ mailu/
 # MySQL
 my.cnf
 note
+
+# Security
 wireguard/data/*
 fail2ban/config/*
+jail.local
