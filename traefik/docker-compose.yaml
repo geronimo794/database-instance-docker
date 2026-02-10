@@ -1,0 +1,72 @@
+# docker-compose.yml
+services:
+  traefik:
+    image: traefik:v3.6
+    command:
+      # Can access the API at port 8080 without HTTPS
+      - "--api.insecure=true"
+
+      # Providers: Can be docker or docker swarm
+      - "--providers.docker=true"
+
+      # Entrypoints: Based on another service entrypoint name
+      # Another service entrypoint name: traefik.tcp.routers.route_db.entryPoints=DATABASE
+      - "--entrypoints.DATABASE.address=:5432"
+
+      # Logging
+      - "--log.level=INFO"
+      - "--accesslog=true"
+
+    ports:
+      # 8080:8080 -> Traefik API
+      - "8080:8080"
+
+      # Routed based on available entrypoints
+      - "6969:5432"
+
+    # Default volumes: Docker socket
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+
+  # Database service
+  postgres-vector-traefik:
+    image: pgvector/pgvector:pg18
+    networks:
+      default:
+        aliases:
+          - postgres-vector-traefik
+    # Normal environment variables
+    environment:
+      POSTGRES_PASSWORD_FILE: /run/secrets/postgres_password
+      PGDATA: /var/lib/postgresql/data/pgdata
+      POSTGRES_USER: ${POSTGRES_VECTOR_USER:-postgres_vector}
+    secrets:
+      - postgres_password
+    labels:
+      # Enable Traefik
+      - "traefik.enable=true"
+
+      # Define the middleware
+      - "traefik.tcp.middlewares.MIDDLEWARE_ALLOW_DB.ipallowlist.sourcerange=127.0.0.1"
+
+      # TCP Router for PostgreSQL
+      # route_db: Router name
+      # Rule: HostSNI(`*`) -> Any hostname can access the database
+      - "traefik.tcp.routers.route_db.rule=HostSNI(`*`)"
+      # Attach the middleware to the router
+      - "traefik.tcp.routers.route_db.middlewares=MIDDLEWARE_ALLOW_DB"
+      # Entrypoints: Define the entrypoint name that will be used to route the traffic on traefik
+      - "traefik.tcp.routers.route_db.entryPoints=DATABASE"
+      # Service: Define the service name that will be used to route the traffic on traefik
+      - "traefik.tcp.routers.route_db.service=SERVICE_DB"
+      # Load balancer: Define the port that will be used to route the traffic on traefik
+      - "traefik.tcp.services.SERVICE_DB.loadbalancer.server.port=5432"
+      
+networks:
+  default:
+    external: true
+    name: ${NETWORK}
+
+secrets:
+   postgres_password:
+     file: ./docker-secrets/postgres_password.txt
