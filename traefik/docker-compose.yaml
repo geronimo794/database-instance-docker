@@ -1,7 +1,7 @@
 # docker-compose.yml
 services:
   traefik:
-    image: traefik:v3.6
+    image: traefik:v3.6.8
     command:
       # Can access the API at port 8080 without HTTPS
       - "--api.insecure=true"

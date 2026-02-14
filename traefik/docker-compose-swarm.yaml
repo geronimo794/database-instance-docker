@@ -1,0 +1,96 @@
+# docker-compose.yml
+services:
+  traefik:
+    image: traefik:v3.6.8
+    command:
+      # Can access the API at port 8080 without HTTPS
+      - "--api.insecure=true"
+
+      # Providers: Can be docker or docker swarm
+      - "--providers.swarm=true"
+
+      # Entrypoints: Based on another service entrypoint name
+      # Another service entrypoint name: traefik.tcp.routers.route_db.entryPoints=DATABASE
+      - "--entrypoints.DATABASE.address=:5432"
+
+      # Logging
+      - "--log.level=INFO"
+      - "--accesslog=true"
+    deploy:
+      placement: 
+        constraints: 
+          - node.role == manager
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+      labels:
+        - "traefik.enable=false"
+
+    ports:
+        # Expose Traefik's entry points to the Swarm
+        # Swarm requires the long syntax for ports.
+      - target: 5432 # Container port ( Traefik websecure entry point)
+        published: 6969 # Host port
+        protocol: tcp
+        mode: host
+      - target: 8080 # Container port ( Traefik websecure entry point)
+        published: 9090 # Host port
+        protocol: tcp
+        mode: host
+        # 'host' mode binds directly to the node's IP where the task runs.
+        # 'ingress' mode uses Swarm's Routing Mesh (load balances across nodes).
+        # Choose based on your load balancing strategy. 'host' is often simpler if using an external LB.
+
+    # Default volumes: Docker socket
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro   # Swarm API socket
+
+  # Database service
+  postgres-vector-traefik:
+    image: pgvector/pgvector:pg18
+    networks:
+      default:
+        aliases:
+          - postgres-vector-traefik
+    # Normal environment variables
+    environment:
+      POSTGRES_PASSWORD_FILE: /run/secrets/postgres_password
+      PGDATA: /var/lib/postgresql/data/pgdata
+      POSTGRES_USER: ${POSTGRES_VECTOR_USER}
+    secrets:
+      - postgres_password
+    deploy:
+      placement: 
+        constraints: 
+          - node.role == manager
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+      labels:
+        # Enable Traefik
+        - "traefik.enable=true"
+
+        # Define the middleware
+        - "traefik.tcp.middlewares.MIDDLEWARE_ALLOW_DB.ipallowlist.sourcerange=127.0.0.1"
+
+        # TCP Router for PostgreSQL
+        # route_db: Router name
+        # Rule: HostSNI(`*`) -> Any hostname can access the database
+        - "traefik.tcp.routers.route_db.rule=HostSNI(`*`)"
+        # Attach the middleware to the router
+        - "traefik.tcp.routers.route_db.middlewares=MIDDLEWARE_ALLOW_DB"
+        # Entrypoints: Define the entrypoint name that will be used to route the traffic on traefik
+        - "traefik.tcp.routers.route_db.entryPoints=DATABASE"
+        # Service: Define the service name that will be used to route the traffic on traefik
+        - "traefik.tcp.routers.route_db.service=SERVICE_DB"
+        # Load balancer: Define the port that will be used to route the traffic on traefik
+        - "traefik.tcp.services.SERVICE_DB.loadbalancer.server.port=5432"
+
+networks:
+  default:
+    external: true
+    name: ${NETWORK_SWARM}
+
+secrets:
+   postgres_password:
+     file: ./docker-secrets/postgres_password.txt

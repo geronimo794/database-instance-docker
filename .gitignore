@@ -35,3 +35,4 @@ jail.local
 # Traefik: Still RnD
 # traefik/*
 postgres_password.txt
+SWARM.md
