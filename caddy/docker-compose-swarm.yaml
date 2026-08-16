@@ -1,0 +1,48 @@
+services:
+  caddy:
+    image: caddy:2.10.2
+    environment:
+      CADDY_ACME_EMAIL: ${CADDY_ACME_EMAIL}
+    configs:
+      - source: caddyfile
+        target: /etc/caddy/Caddyfile
+    volumes:
+      - ./persistent-data/data:/data
+      - ./persistent-data/config:/config
+    ports:
+      - target: 80
+        published: ${CADDY_HTTP_PORT}
+        protocol: tcp
+        mode: host
+      - target: 443
+        published: ${CADDY_HTTPS_PORT}
+        protocol: tcp
+        mode: host
+      - target: 443
+        published: ${CADDY_HTTPS_PORT}
+        protocol: udp
+        mode: host
+    networks:
+      default:
+        aliases:
+          - caddy
+    deploy:
+      mode: replicated
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+      placement:
+        constraints:
+          - node.role == manager
+    logging:
+      driver: json-file
+      options:
+        max-size: "200k"
+        max-file: "10"
+        mode: non-blocking
+
+networks:
+  default:
+    external: true
+    name: ${NETWORK}
+

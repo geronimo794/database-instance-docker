@@ -14,6 +14,8 @@ prometheus.yml
 /persistent-data/postgres/*
 /persistent-data/mssql-2017/*
 /persistent-data/postgres-vector/*
+/caddy/persistent-data/data/*
+/caddy/persistent-data/config/*
 
 # Running docker compose files
 docker-compose-running-*.yaml
