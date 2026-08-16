@@ -3,10 +3,8 @@ services:
     image: caddy:2.10.2
     environment:
       CADDY_ACME_EMAIL: ${CADDY_ACME_EMAIL}
-    configs:
-      - source: caddyfile
-        target: /etc/caddy/Caddyfile
     volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
       - ./persistent-data/data:/data
       - ./persistent-data/config:/config
     ports:
@@ -45,4 +43,7 @@ networks:
   default:
     external: true
     name: ${NETWORK}
+
+
+
 

@@ -2,4 +2,6 @@
 	email {$CADDY_ACME_EMAIL}
 }
 
-# Put the Caddy configuration here
+:80 {
+	respond "Caddy is up" 200
+}

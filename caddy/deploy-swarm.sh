@@ -22,9 +22,19 @@ set +o allexport
 # Deploy to swarm
 ######################################
 
-mkdir -p persistent-data/caddy/data persistent-data/caddy/config
+mkdir -p persistent-data/data persistent-data/config
 
-# Replace all needed variables in the processed docker compose file with all needed variables from .env file
+if [ ! -s Caddyfile ]; then
+	echo "Caddyfile is missing or empty"
+	exit 1
+fi
+
+# Drop leftover Swarm config from earlier deploys (empty configs fail the daemon)
+if sudo docker config inspect caddy_caddyfile >/dev/null 2>&1; then
+	sudo docker service update --config-rm caddy_caddyfile caddy_caddy >/dev/null 2>&1 || true
+	sudo docker config rm caddy_caddyfile >/dev/null 2>&1 || true
+fi
+
 envsubst < docker-compose-swarm.yaml > docker-compose-swarm.processed.yaml
 
 # Deploy to swarm
@@ -35,3 +45,6 @@ rm docker-compose-swarm.processed.yaml
 
 # To show the logs:
 # docker service logs caddy_caddy --follow
+
+
+
